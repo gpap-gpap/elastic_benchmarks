@@ -2,7 +2,8 @@ from __future__ import print_function, division
 
 import matplotlib
 matplotlib.use('agg')
-
+import logging
+# import nutils as nu
 from nutils import *
 import scipy
 import numpy as np
@@ -10,7 +11,7 @@ import matplotlib.pyplot as plt
 from scipy import sparse
 from scipy.io import mmwrite
 
-@log.title
+# @logging.log.title
 def makeplots( domain, geom, Lx, Lz, value, name, title, ndigits=0, index=None, clim=None, lineOn=False, imgtype=None,):
   points, colors = domain.elem_eval( [ geom, value ], ischeme='bezier3', separate=True )
 
@@ -58,7 +59,7 @@ def point_eval(func, domain, geom, point):
   domain = domain[tuple(slice(0, p) if p > 0 else slice(None) for p in point)]
   for p in point:
       domain = domain.boundary['right' if p > 0 else 'left']
-  return numpy.asarray(domain.integrate( func, geometry=geom, ischeme='gauss2' ).toscipy().todense())
+  return np.asarray(domain.integrate( func, geometry=geom, ischeme='gauss2' ).toscipy().todense())
 
 def elast_mat(rho, cp, cs, lam, mu, ndims, nx, ny, nz, vec_basis, domain, geom):
   # define PDE
@@ -94,7 +95,7 @@ def elast_mat(rho, cp, cs, lam, mu, ndims, nx, ny, nz, vec_basis, domain, geom):
   return K, C, M, rhs
 
 
-def main( ndims=2,          # problem dimension (2,3) 
+def main( ndims=3,          # problem dimension (2,3) 
           dx=10.0,          # grid size in x-direction 
           dy=10.0,          # grid size in y-direction          
           dz=10.0,          # grid size in z-direction  
@@ -102,7 +103,7 @@ def main( ndims=2,          # problem dimension (2,3)
           plots=True,       # plot of parameters and num. solution
           spy=True,         # provide spy plot of matrices
           storing=False,    # storing=True saves matrices in matrix market format (no solve) 
-          degree=1 ):       # degree of FEM splines
+          degree=3 ):       # degree of FEM splines
 
   # domain size
   Lx = 600.0
@@ -200,4 +201,4 @@ def main( ndims=2,          # problem dimension (2,3)
       elif(ndims==3):
         makevtk(domain, geom, rho, lam, mu, cp, cs, sol.T, freq, vec_basis, 'wedge3d')
 
-util.run( main )
+cli.run( main )
