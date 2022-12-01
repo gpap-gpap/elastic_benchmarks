@@ -5,6 +5,7 @@ matplotlib.use('agg')
 
 from nutils import *
 import scipy
+import logging
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import sparse
@@ -12,7 +13,7 @@ import obspy
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
-@log.title
+# @logging.log.title
 def makeplots( domain, geom, verts_x, verts_z, value, name, title, ndigits=0, index=None, imgtype=None):
   points, colors = domain.elem_eval( [ geom, value ], ischeme='bezier3', separate=True )
 
